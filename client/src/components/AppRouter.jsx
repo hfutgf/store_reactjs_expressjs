@@ -4,17 +4,16 @@ import { authRoutes, publicRoutes } from "../../routes";
 import { Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../main";
-import { SHOP_ROUTE } from "../../utils/constants";
+import { SHOP_ROUTE } from "../utils/constants";
 import { observer } from "mobx-react-lite";
 
 const AppRouter = observer(() => {
-  const { user } = useContext(Context);
-
+  const { userStore } = useContext(Context);
 
   return (
     <>
       <Routes>
-        {user.isAuth &&
+        {userStore.isAuth &&
           authRoutes.map(({ path, Component }, i) => (
             <Route key={i} path={path} element={<Component />} />
           ))}

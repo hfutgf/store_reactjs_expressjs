@@ -12,7 +12,7 @@ export const Context = createContext(null);
 ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <Context.Provider
-        value={{ user: new UserStore(), devices: new DeviceStore() }}
+        value={{ userStore: new UserStore(), deviceStore: new DeviceStore() }}
       >
         <App />
       </Context.Provider>

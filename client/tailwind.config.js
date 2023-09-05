@@ -16,6 +16,7 @@ export default {
       light: "#fff",
       dark: "#000",
       bluelight: "rgb(56 189 248)",
+      yellow: "rgb(251 191 36)",
     },
   },
 

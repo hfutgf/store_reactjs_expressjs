@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { LOGIN_ROUTE, REGISTRATION_ROUTE } from "../../utils/constants";
+import { LOGIN_ROUTE, REGISTRATION_ROUTE } from "../utils/constants";
 
 const Auth = () => {
   const location = useLocation();
