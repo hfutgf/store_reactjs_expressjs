@@ -6,7 +6,7 @@ import Star from "../assets/star.png";
 
 const Device = observer(() => {
   const { deviceStore } = useContext(Context);
- 
+
   return (
     <div className="bg-purple min-h-screen ">
       <div className="container mx-auto ">
@@ -29,16 +29,24 @@ const Device = observer(() => {
             <h4 className="text-[50px] text-light font-[600]">
               Price: {deviceStore.changeDevice.price} $
             </h4>
+            <button className="py-[10px] w-[50%] bg-bluelight text-light text-[32px] font-[600] rounded-[10px] mt-[30px]">
+              Add to Basket
+            </button>
           </div>
         </div>
         <div className="mt-[20px] ">
           <h2 className="text-light text-[32px] font-[600]">
             Characteristics:
           </h2>
-          <ul className="flex flex-col w-full" >
-            <li className="">Lorem ipsum dolor sit amet.</li>
-            <li className="">Lorem ipsum dolor sit amet.</li>
-            <li className="">Lorem ipsum dolor sit amet.</li>
+          <ul className="flex flex-col w-full">
+            {deviceStore.characteristics.map((character) => (
+              <li
+                key={character.id}
+                className="text-[20px] text-light font-[600] "
+              >
+                {character.character}
+              </li>
+            ))}
           </ul>
         </div>
       </div>

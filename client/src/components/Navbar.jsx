@@ -9,6 +9,13 @@ import { useLocation } from "react-router-dom";
 const Navbar = observer(() => {
   const { userStore } = useContext(Context);
   const { pathname } = useLocation();
+
+  const logOut = () => {
+    userStore.setIsAuth(false);
+    userStore.setUser({});
+    localStorage.removeItem("token");
+  };
+
   return (
     <div className="bg-purple min-h-[100px] max-h-[100px] p-[10px]">
       <div className="container mx-auto flex items-center justify-between">
@@ -23,15 +30,18 @@ const Navbar = observer(() => {
               <div className="text-light text-[20px] flex items-center gap-[16px] ">
                 <Link
                   to={AMDIN_ROUTE}
-                  className="border-[1px] border-solid border-light rounded-[5px] px-[10px] py-[5px]"
+                  className={`border-[1px] border-solid border-light rounded-[5px] px-[10px] py-[5px] ${
+                    pathname === "/admin" ? "hidden" : ""
+                  }`}
                 >
                   Admin
                 </Link>
                 <Link
                   to={LOGIN_ROUTE}
+                  onClick={() => logOut()}
                   className="border-[1px] border-solid border-light rounded-[5px] px-[10px] py-[5px]"
                 >
-                  Sign in
+                  Exit
                 </Link>
               </div>
             )}
@@ -43,7 +53,8 @@ const Navbar = observer(() => {
             ) : (
               <div className="text-light text-[20px] flex items-center gap-[16px] ">
                 <Link
-                  onClick={() => userStore.setIsAuth(true)}
+                  to={LOGIN_ROUTE}
+                  // onClick={() => userStore.setIsAuth(true)}
                   className="border-[1px] border-solid border-light rounded-[5px] px-[10px] py-[5px]"
                 >
                   Auth

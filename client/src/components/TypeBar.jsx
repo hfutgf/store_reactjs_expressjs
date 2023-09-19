@@ -2,9 +2,14 @@ import React from "react";
 import { useContext } from "react";
 import { Context } from "../main";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { fetchTypes } from "../http/deviceAPI";
 
 const TypeBar = observer(() => {
   const { deviceStore } = useContext(Context);
+  useEffect(() => {
+    fetchTypes().then((res) => deviceStore.setTypes(res));
+  }, []);
   return (
     <ul className="w-[20%] border-[1px] border-solid border-light rounded-[3px] p-[12px] flex flex-col items-start gap-[5px]">
       {deviceStore.types.map((type, i) => (

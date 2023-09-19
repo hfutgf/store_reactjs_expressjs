@@ -9,12 +9,13 @@ import DeviceStore from "./store/DeviceStore.js";
 
 export const Context = createContext(null);
 
+
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <BrowserRouter>
-      <Context.Provider
-        value={{ userStore: new UserStore(), deviceStore: new DeviceStore() }}
-      >
-        <App />
-      </Context.Provider>
-    </BrowserRouter>
+  <BrowserRouter>
+    <Context.Provider
+      value={{ userStore: new UserStore(), deviceStore: new DeviceStore() }}
+    >
+      <App />
+    </Context.Provider>
+  </BrowserRouter>
 );
