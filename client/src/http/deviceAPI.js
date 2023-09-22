@@ -4,7 +4,6 @@ export const createType = async (type) => {
   const { data } = await $authHost.post("/api/type", {
     name: type,
   });
-  console.log(data);
   if (data) {
     alert("Successfully");
   }
@@ -33,5 +32,16 @@ export const fetchBrands = async () => {
 
 export const fetchDevice = async () => {
   const { data } = await $host.get("/api/device");
+  return data;
+};
+
+export const createDevice = async (formData) => {
+  const { data } = await $authHost.post("/api/device", formData);
+
+  return data;
+};
+
+export const fetchOneDevice = async (id) => {
+  const { data } = await $host.get(`/api/device/${id}`);
   return data;
 };

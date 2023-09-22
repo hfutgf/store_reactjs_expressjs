@@ -16,12 +16,10 @@ const CreateType = observer(() => {
     deviceStore.setTypeModal(false);
   };
 
-  const tM = JSON.parse(localStorage.getItem("typeModal"));
-
   return (
     <div
       className={`w-full min-h-screen fixed transition-all ease-in-out delay-100  ${
-        tM ? "translate-x-[0%] " : "translate-x-[-300%]  "
+        deviceStore.typeModal ? "translate-x-[0%] " : "translate-x-[-300%]  "
       } flex items-center justify-center top-0`}
     >
       <div className="w-[800px] bg-light rounded-[10px] p-[20px]  ">

@@ -3,15 +3,56 @@ import React from "react";
 import { useContext } from "react";
 import { Context } from "../../main";
 import { useState } from "react";
+import { createDevice, fetchBrands, fetchTypes } from "../../http/deviceAPI";
+import { useEffect } from "react";
+import Characteristics from "./Characteristics";
 
 const CreateDevice = observer(() => {
   const { deviceStore } = useContext(Context);
+
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [type, setType] = useState("");
-  const [brand, setBrand] = useState("");
+  const [price, setPrice] = useState(null);
+  const [img, setImg] = useState(null);
+  const [info, setInfo] = useState([]);
 
+  useEffect(() => {
+    fetchTypes().then((res) => deviceStore.setTypes(res));
+    fetchBrands().then((res) => deviceStore.setBrands(res));
+  }, []);
 
+  const addInfo = () => {
+    setInfo([...info, { title: "", description: "", id: Date.now() }]);
+  };
+
+  const changeBrand = (value) => {
+    const brand = deviceStore.brands.find((i) => i.name === value);
+    deviceStore.setSelectedBrand(brand);
+  };
+
+  const changeType = (value) => {
+    const type = deviceStore.types.find((i) => i.name === value);
+    deviceStore.setSelectedType(type);
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("price", `${price}`);
+    formData.append("img", img?.[0]);
+    formData.append("brandId", deviceStore.selectedBrand.id);
+    formData.append("typeId", deviceStore.selectedType.id);
+    formData.append("info", JSON.stringify(info));
+    createDevice(formData)
+      .then((data) => {
+        if (data) {
+          alert("Successfully");
+          deviceStore.setDeviceModal(false);
+        }
+      })
+      .catch((e) => console.log(e));
+  };
 
   return (
     <div
@@ -30,7 +71,7 @@ const CreateDevice = observer(() => {
             <span className="w-[20px] h-[3px] bg-dark rotate-[135deg] absolute"></span>
           </div>
         </div>
-        <form className="mt-[50px] flex flex-col gap-[20px]">
+        <form onSubmit={submit} className="mt-[50px] flex flex-col gap-[20px]">
           <label
             htmlFor="createbrand"
             className="text-[20px] font-[600] text-dark "
@@ -48,33 +89,47 @@ const CreateDevice = observer(() => {
             Price
             <input
               value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(e) => {
+                setPrice(Number(e.target.value));
+              }}
               id="price"
-              type="text"
+              type="number"
               className="w-full py-[10px] border-[1px] border-solid border-dark rounded-[5px] px-[20px]"
             />
           </label>
-          <label
-            htmlFor="img"
-            className="text-[20px] font-[600] text-dark w-[50%] "
-          >
-            Image
-            <input
-              id="img"
-              type="file"
-              className="w-full py-[10px]  px-[20px]"
-            />
-          </label>
+          <div className="mt-[10px]">
+            <label
+              htmlFor="img"
+              className="text-[20px] font-[600] p-[10px] w-[20%] bg-bluelight text-light text-center rounded-[10px] cursor-pointer"
+            >
+              Selected IMG
+              <input
+                id="img"
+                type="file"
+                className=" hidden "
+                onChange={(e) => setImg(e.target.files)}
+              />
+            </label>
+            <span
+              className={`p-[5px] rounded-[5px] text-light ml-[5px] ${
+                img ? "bg-green" : "bg-red"
+              } `}
+            >
+              {img ? "Selected" : "Not selected"}
+            </span>
+          </div>
           <div className="flex items-center gap-[20px]">
             <div className="w-[50%] flex flex-col gap-[5px]">
               <span className="text-[16px] text-dark font-[600]">Brand:</span>
               <select
-                onChange={(e) => setBrand(e.target.value)}
+                onChange={(e) => changeBrand(e.target.value)}
                 className="border-[1px] border-dark bolrder-solid w-[60%] rounded-[3px] font-[600] text-[16px] outline-none"
               >
-                <option value="notselected">Not selected</option>
+                <option value="notselected">
+                  {deviceStore.selectedBrand.name || "Selected Brand"}
+                </option>
                 {deviceStore.brands.map((brand) => (
-                  <option key={brand.id} value={`${brand.name.toLowerCase()}`}>
+                  <option key={brand.id} value={`${brand.name}`}>
                     {brand.name}
                   </option>
                 ))}
@@ -83,18 +138,21 @@ const CreateDevice = observer(() => {
             <div className="w-[50%] flex flex-col gap-[5px]">
               <span className="text-[16px] text-dark font-[600]">Type:</span>
               <select
-                onChange={(e) => setType(e.target.value)}
+                onChange={(e) => changeType(e.target.value)}
                 className="border-[1px] border-dark bolrder-solid w-[60%] rounded-[3px] font-[600] text-[16px] outline-none"
               >
-                <option value="notselected">Not selected</option>
+                <option value="notselected">
+                  {deviceStore.selectedType.name || "Selected Brand"}
+                </option>
                 {deviceStore.types.map((type) => (
-                  <option key={type.id} value={`${type.name.toLowerCase()}`}>
+                  <option key={type.id} value={`${type.name}`}>
                     {type.name}
                   </option>
                 ))}
               </select>
             </div>
           </div>
+          <Characteristics addInfo={addInfo} info={info} setInfo={setInfo} />
           <button
             type="submit"
             className="py-[10px] px-[20px] rounded-[10px] bg-bluelight text-light text-[20px] font-[600] mt-[30px] w-full"

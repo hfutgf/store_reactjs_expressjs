@@ -19,7 +19,6 @@ const App = observer(() => {
   localStorage.setItem("route", JSON.stringify(pathname));
   const route = JSON.parse(localStorage.getItem("route"));
 
-  
   useEffect(() => {
     navigate(route);
     check()

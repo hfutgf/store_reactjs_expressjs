@@ -15,6 +15,7 @@ const Shop = observer(() => {
     fetchDevice().then((res) => deviceStore.setDevices(res.rows));
   }, []);
 
+
   return (
     <div className="min-h-screen bg-purple">
       <div className="container mx-auto flex ">

@@ -9,12 +9,11 @@ const DeviceCard = observer(({ device }) => {
   const { deviceStore } = useContext(Context);
   return (
     <Link
-      onClick={() => deviceStore.setChangeDevice(device.id)}
       to={DEVICE_ROUTE + `/${device.id}`}
       className="max-w-[200px] min-w-[200px] min-h-[320px] max-h-[320px] border-[1px] border-solid border-light rounded-[5px] flex  flex-col overflow-hidden"
     >
       <img
-        src={device.img}
+        src={import.meta.env.VITE_API_KEY + "/" + device.img}
         alt="img"
         width={200}
         height={210}

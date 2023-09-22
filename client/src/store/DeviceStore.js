@@ -5,8 +5,9 @@ export default class DeviceStore {
     this._types = [];
     this._brands = [];
     this._devices = [];
+    this._device = {};
     this._selectedType = { id: 34233324, name: "Not selected type" };
-    this._selectedBrand = { is: 4223432, name: "Nor selected brand" };
+    this._selectedBrand = { id: 4223432, name: "Not selected brand" };
     this._changeDevice = {};
     this._characteristics = [
       { id: 1, character: "Otta kuchlik eplab bomidi" },
@@ -59,6 +60,13 @@ export default class DeviceStore {
 
   setDeviceModal(bool) {
     this._deviceModal = bool;
+  }
+  setDevice(obj) {
+    this._device = obj;
+  }
+
+  get device() {
+    return this._device;
   }
 
   get types() {

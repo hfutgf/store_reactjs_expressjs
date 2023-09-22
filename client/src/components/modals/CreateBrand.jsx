@@ -4,14 +4,11 @@ import { useContext } from "react";
 import { Context } from "../../main";
 import { useState } from "react";
 import { createBrand } from "../../http/deviceAPI";
-import { useEffect } from "react";
-
 
 const CreateBranad = observer(() => {
   const [brand, setBrand] = useState("");
-  
+
   const { deviceStore } = useContext(Context);
-  localStorage.setItem("brandModal", JSON.stringify(deviceStore.brandModal));
 
   const submit = (e) => {
     e.preventDefault();
@@ -19,12 +16,10 @@ const CreateBranad = observer(() => {
     deviceStore.setBrandModal(false);
   };
 
-  const bM = JSON.parse(localStorage.getItem("brandModal"));
-
   return (
     <div
       className={`w-full min-h-screen fixed transition-all ease-in-out delay-100  ${
-        bM ? "translate-x-[0%] " : "translate-x-[-300%]  "
+        deviceStore.brandModal ? "translate-x-[0%] " : "translate-x-[-300%]  "
       } flex items-center justify-center top-0`}
     >
       <div className="w-[800px] bg-light rounded-[10px] p-[20px]  ">
